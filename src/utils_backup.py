@@ -118,13 +118,6 @@ def get_placeholder_params(image):
         "image_half_width": int(image.shape[1] / 2),
         "image_half_height": int(image.shape[0] / 2),
     }
-#change log
-def remove_ifpicked(transform_names,transform_groups,count):
-    if len(transform_groups)>0:
-        if len(transform_groups[count][1]) is not 0:
-            for i in transform_groups[count][1]:
-                transform_names.remove(i)
-    return transform_names
 
 
 def select_transformations(augmentations: dict, interface_type: str) -> list:
@@ -149,44 +142,6 @@ def select_transformations(augmentations: dict, interface_type: str) -> list:
                     ["None"] + sorted(list(augmentations.keys())),
                 )
             )
-
-        #change log
-        transform_group_names = ["OneOf","SomeOf"]
-        
-
-        # if st.sidebar.checkbox("Group Transformation",False):
-        temp_val = []
-        transform_groups = ([[st.sidebar.selectbox(
-            "Select transformation group type G0:", transform_group_names
-        ),
-        st.sidebar.multiselect("List of available augmentation",(sorted(list(transform_names)),temp_val))
-        ]])
-        transform_names =remove_ifpicked(transform_names=transform_names,transform_groups=transform_groups, count=0)
-        count = 0
-        
-        while transform_groups[-1][0] != "None":
-            count+=1
-            # if count == 5:
-            #     exit()
-            transform_groups.append([
-                st.sidebar.selectbox(
-                    f"Select transformation group type G{count}:",
-                    ["None"] + transform_group_names
-                ),
-                st.sidebar.multiselect("List of available augmentation",sorted(list(transform_names)) ,key=count),
-            ])
-            transform_names =remove_ifpicked(transform_names=transform_names,transform_groups=transform_groups,count = count)
-        # st.write(transform_names)
-        # st.write(transform_groups[:-1])
-        transform_groups=transform_groups[:-1]
-        if transform_names:
-            for i in transform_names:
-                transform_groups.append(i)
-        # transform_names = transform_groups
-        # st.write(transform_names[:-1])
-        st.write(transform_groups[:-1])
-
-        #change log ends
         transform_names = transform_names[:-1]
     return transform_names
 
