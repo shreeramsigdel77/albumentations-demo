@@ -30,7 +30,7 @@ def local_css(file_name):
         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
 def main():
-    local_css("/home/pasonatech/workspace/albumentations_forked/albumentations-demo/src/custom_css.css")
+    local_css("src/custom_css.css")
     # logo_img = "/home/pasonatech/workspace/albumentations_forked/albumentations-demo/images/p.png"
     # html_sticky = f"""
     #     <div class="sticky pt-2">
@@ -52,7 +52,7 @@ def main():
 
         #pick css
         if interface_type == "LoadMyFile":
-            local_css("/home/pasonatech/workspace/albumentations_forked/albumentations-demo/src/custom_loadmy_css.css")
+            local_css("src/custom_loadmy_css.css")
 
 
 
