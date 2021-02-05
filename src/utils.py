@@ -126,6 +126,19 @@ def remove_ifpicked(transform_names,transform_groups,count):
                 transform_names.remove(i)
     return transform_names
 
+#change log2
+def grouping_params(interface_type,count):
+    import random
+    if interface_type is "OneOf":
+        p = st.sidebar.slider("P",0.0,1.0,key=str(count),value= 0.5)
+        return p
+    elif interface_type is "SomeOf":
+        low, high = st.sidebar.slider("blur_limit",1,10,(1,2),key=str(count),step=2)
+        return(low,high)
+    
+
+
+
 
 def select_transformations(augmentations: dict, interface_type: str) -> list:
     # in the Simple mode you can choose only one transform
@@ -149,46 +162,61 @@ def select_transformations(augmentations: dict, interface_type: str) -> list:
                     ["None"] + sorted(list(augmentations.keys())),
                 )
             )
-
-        #change log
-        transform_group_names = ["OneOf","SomeOf"]
-        
-
-        # if st.sidebar.checkbox("Group Transformation",False):
-        temp_val = []
-        transform_groups = ([[st.sidebar.selectbox(
-            "Select transformation group type G0:", transform_group_names
-        ),
-        st.sidebar.multiselect("List of available augmentation",(sorted(list(transform_names)),temp_val))
-        ]])
-        transform_names =remove_ifpicked(transform_names=transform_names,transform_groups=transform_groups, count=0)
-        count = 0
-        
-        while transform_groups[-1][0] != "None":
-            count+=1
-            # if count == 5:
-            #     exit()
-            transform_groups.append([
-                st.sidebar.selectbox(
-                    f"Select transformation group type G{count}:",
-                    ["None"] + transform_group_names
-                ),
-                st.sidebar.multiselect("List of available augmentation",sorted(list(transform_names)) ,key=count),
-            ])
-            transform_names =remove_ifpicked(transform_names=transform_names,transform_groups=transform_groups,count = count)
-        # st.write(transform_names)
-        # st.write(transform_groups[:-1])
-        transform_groups=transform_groups[:-1]
-        if transform_names:
-            for i in transform_names:
-                transform_groups.append(i)
-        # transform_names = transform_groups
-        # st.write(transform_names[:-1])
-        st.write(transform_groups[:-1])
-
-        #change log ends
         transform_names = transform_names[:-1]
+
+    #Customized
+    elif interface_type == "Custom":
+        transform_names = [
+            st.sidebar.selectbox(
+                "Select transformation №1:", sorted(list(augmentations.keys()))
+            )
+        ]
+        while transform_names[-1] != "None":
+            transform_names.append(
+                st.sidebar.selectbox(
+                    f"Select transformation №{len(transform_names) + 1}:",
+                    ["None"] + sorted(list(augmentations.keys())),
+                )
+            )
+        
+        #change log
+        transform_group_names = ["OneOf","SomeOf", "Sequential"]
+
+        if st.sidebar.checkbox("Group Transformation",False):
+            transform_groups = ([[st.sidebar.selectbox(
+                "Select transformation group type G0:", transform_group_names
+            ),
+            
+            st.sidebar.multiselect("List of available augmentation",(sorted(list(transform_names))))
+            ]])
+            
+            transform_names =remove_ifpicked(transform_names=transform_names,transform_groups=transform_groups, count=0)
+            count = 0
+            
+            while transform_groups[-1][0] != "None":
+                # grouping_params(transform_groups[count][0],count = count)
+                count+=1
+                transform_groups.append([
+                    st.sidebar.selectbox(
+                        f"Select transformation group type G{count}:",
+                        ["None"] + transform_group_names
+                    ),
+                    st.sidebar.multiselect("List of available augmentation",sorted(list(transform_names)) ,key=count),
+                ])
+                transform_names =remove_ifpicked(transform_names=transform_names,transform_groups=transform_groups,count = count)
+            transform_groups=transform_groups[:-1]
+            if transform_names:
+                for i in transform_names:
+                    transform_groups.append(i)
+
+            #change log ends
+            transform_names = transform_groups[:-1]
+            transform_names = transform_groups[:-1]
+        
+        else:
+           transform_names = transform_names[:-1] 
     return transform_names
+    # return transform_names
 
 
 def show_random_params(data: dict, interface_type: str = "Professional"):
@@ -201,3 +229,27 @@ def show_random_params(data: dict, interface_type: str = "Professional"):
                 applied_params["__class_fullname__"].split(".")[-1]
             ] = applied_params["params"]
         st.write(random_values)
+    #changelog
+    elif interface_type == "Custom":
+        st.subheader("Random params used")
+        random_values = {}
+        for applied_params in data["replay"]["transforms"]:
+            random_values[
+                applied_params["__class_fullname__"].split(".")[-1]
+            ] = applied_params["params"]
+        st.write(random_values)
+
+
+def file_selector(folder_path='.'):
+    filenames = os.listdir(folder_path)
+    selected_filename = st.selectbox('Select a file', filenames)
+    return os.path.join(folder_path, selected_filename)
+
+# @st.cache()
+def onetine_data_loader(data):
+    st.write(data)
+
+
+
+
+

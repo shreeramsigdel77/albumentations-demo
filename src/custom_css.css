@@ -1,0 +1,80 @@
+body {
+    /* color: #fff; */
+    background-color: #fffdf5;
+}
+
+/* sticky image */
+div.sticky {
+    position: fixed;
+    right: 64px;
+    top: 40px;
+}
+.sticky img{
+    width: 50px;    
+}
+
+/* widget bg */
+.Widget>label,
+.row-widget.stRadio div>label {
+    background: #f000;
+}
+
+
+
+.sidebar .sidebar-content {
+    background-image: linear-gradient(#ddc3c3, #79764ecf);
+    color: white;
+}
+
+
+
+input[type=text]{
+     color: #f00!important;
+     background-color: #f2e3c6
+}
+
+
+
+div.sidebar-content button.sidebar-close {
+    color: #f00;
+    border: solid 0.1em red;
+}
+
+/* for all btn */
+section.sidebar div.element-container button{
+    box-shadow: 3px 3px #888;
+    border-radius: 3%;
+    height: 3em;
+}
+
+/* custom savebutton */
+section.sidebar div.element-container button:nth-child(1) {
+    color: #fff;
+    border-color: #025702;
+    
+    width: 100%;
+    background-color: #1c6a06;
+    
+}
+
+section.sidebar div.element-container button:nth-child(1):hover {
+    color: #025702;
+    background-color: #fff;
+    transition: stroke-dashoffset 4s,
+    stroke-dasharray 4s;
+    border-color:#025702;
+    box-shadow: 0px 0px #888;
+
+
+}
+
+/* browse files */
+div.element-container .stFileUploader button {
+    color: #2000ff !important;
+    box-shadow: 0px 0px #888 !important;
+    background-color: #fff!important;
+}
+
+
+
+
